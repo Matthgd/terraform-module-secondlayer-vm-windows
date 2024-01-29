@@ -30,3 +30,20 @@ module "vm" {
 
   tags = var.tags
 }
+
+module "ansible" {
+  depends_on = [
+    module.vm
+  ]
+  source               = "https://github.com/Matthgd/terraform-module-azurerm-vm-extension.git"
+  name                 = "ansible"
+  virtual_machine_id   = module.vm.id
+  publisher            = "Microsoft.Compute"
+  type                 = "CustomScriptExtension"
+  type_handler_version = "1.9"
+  settings = jsonencode({
+    fileUris : ["https://raw.githubusercontent.com/ansible/ansible-documentation/devel/examples/scripts/ConfigureRemotingForAnsible.ps1"]
+    commandToExecute = "powershell -ExecutionPolicy Unrestricted -File ConfigureRemotingForAnsible.ps1"
+  })
+
+}
