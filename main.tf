@@ -1,5 +1,5 @@
 module "nic" {
-  source                        = "https://github.com/Matthgd/terraform-module-azurerm-network-interface.git"
+  source                        = "git::https://github.com/Matthgd/terraform-module-azurerm-network-interface.git"
   location                      = var.location
   name                          = "${var.name}-nic"
   resource_group_name           = var.resource_group_name
@@ -8,7 +8,7 @@ module "nic" {
 }
 
 module "vm" {
-  source                = "https://github.com/Matthgd/terraform-module-azurerm-vm-windows.git"
+  source                = "git::https://github.com/Matthgd/terraform-module-azurerm-vm-windows.git"
   name                  = var.name
   resource_group_name   = var.resource_group_name
   location              = var.location
@@ -35,7 +35,7 @@ module "ansible" {
   depends_on = [
     module.vm
   ]
-  source               = "https://github.com/Matthgd/terraform-module-azurerm-vm-extension.git"
+  source               = "git::https://github.com/Matthgd/terraform-module-azurerm-vm-extension.git"
   name                 = "ansible"
   virtual_machine_id   = module.vm.id
   publisher            = "Microsoft.Compute"
